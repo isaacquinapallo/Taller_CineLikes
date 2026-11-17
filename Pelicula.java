@@ -7,6 +7,11 @@ public class Pelicula {
     private int anio;
     private int meGusta;
 
+    /** Constructor para películas nuevas: comienzan con 0 me gusta. */
+    public Pelicula(int codigo, String titulo, String director,
+                    String genero, int anio) {
+        this(codigo, titulo, director, genero, anio, 0);
+    }
     public Pelicula(int codigo, String titulo, String director,
                     String genero, int anio, int meGusta) {
         this.codigo = codigo;
