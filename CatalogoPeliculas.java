@@ -138,16 +138,61 @@ public class CatalogoPeliculas implements OperacionesCatalogo {
         return peliculas;
     }
 
-    // ============ Integrante B: R3 y R4. PENDIENTE ============
+    // ============ Integrante B: R3 y R4 (búsquedas) ============
 
+    /**
+     * R3. Búsqueda lineal por texto en título o director.
+     * - Ignora mayúsculas/minúsculas y hace trim a la consulta.
+     * - Si coincide en título Y director, entra una sola vez.
+     * - Devuelve un ArrayList nuevo, en orden por código.
+     * - Si no hay coincidencias devuelve lista vacía, nunca null.
+     * - Lanza IllegalArgumentException si la consulta es null, vacía o solo espacios.
+     */
     @Override
     public ArrayList<Pelicula> buscarCoincidencias(String texto) {
-        throw new UnsupportedOperationException("Pendiente: integrante B (búsqueda lineal).");
+        if (texto == null || texto.trim().isEmpty()) {
+            throw new IllegalArgumentException("Ingrese un texto para buscar.");
+        }
+        String consulta = texto.trim().toLowerCase();
+
+        ArrayList<Pelicula> resultados = new ArrayList<>();
+        for (int i = 0; i < peliculas.size(); i++) {
+            Pelicula p = peliculas.get(i);
+            boolean enTitulo = p.getTitulo().toLowerCase().contains(consulta);
+            boolean enDirector = p.getDirector().toLowerCase().contains(consulta);
+            if (enTitulo || enDirector) {
+                resultados.add(p); // misma referencia del catálogo, no una copia
+            }
+        }
+        return resultados;
     }
 
+    /**
+     * R4. Búsqueda binaria propia sobre la lista principal (ordenada por código).
+     * - Devuelve el índice en el ArrayList principal, o -1 si no existe.
+     * - Lanza IllegalArgumentException si el código no es positivo.
+     */
     @Override
     public int buscarIndicePorCodigo(int codigo) {
-        throw new UnsupportedOperationException("Pendiente: integrante B (búsqueda binaria).");
+        if (codigo <= 0) {
+            throw new IllegalArgumentException("El código debe ser un número positivo.");
+        }
+        int inicio = 0;
+        int fin = peliculas.size() - 1;
+
+        while (inicio <= fin) {
+            int medio = inicio + (fin - inicio) / 2;
+            int codigoMedio = peliculas.get(medio).getCodigo();
+
+            if (codigoMedio == codigo) {
+                return medio;
+            } else if (codigoMedio < codigo) {
+                inicio = medio + 1;
+            } else {
+                fin = medio - 1;
+            }
+        }
+        return -1;
     }
 
     // ============ Integrante C: R4, R5 y R6. PENDIENTE ============
