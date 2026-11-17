@@ -39,7 +39,7 @@ public class PruebasCatalogo {
         System.out.println("7. Búsqueda sin coincidencias no nula y vacía: "
                 + (sinResultados != null && sinResultados.isEmpty() ? "APROBADO" : "FALLÓ"));
         try {
-            catalogo.editarPelicula(1999, "Película Editada", "Director Editado", "Sci-Fi", 2025);
+            catalogo.editarPelicula(1999, "Película Editada", "Director Editado", "Ciencia ficción", 2025);
             Pelicula pEditada = catalogo.getPeliculas().get(catalogo.buscarIndicePorCodigo(1999));
             System.out.println("8. Edición válida aplicada: "
                     + (pEditada.getTitulo().equals("Película Editada") ? "APROBADO" : "FALLÓ"));

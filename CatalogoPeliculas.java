@@ -1,5 +1,6 @@
 import java.time.Year;
 import java.util.ArrayList;
+import java.util.Locale;
 
 /**
  * Lógica del catálogo. El ArrayList principal siempre se mantiene
@@ -153,13 +154,13 @@ public class CatalogoPeliculas implements OperacionesCatalogo {
         if (texto == null || texto.trim().isEmpty()) {
             throw new IllegalArgumentException("Ingrese un texto para buscar.");
         }
-        String consulta = texto.trim().toLowerCase();
+        String consulta = texto.trim().toLowerCase(Locale.ROOT);
 
         ArrayList<Pelicula> resultados = new ArrayList<>();
         for (int i = 0; i < peliculas.size(); i++) {
             Pelicula p = peliculas.get(i);
-            boolean enTitulo = p.getTitulo().toLowerCase().contains(consulta);
-            boolean enDirector = p.getDirector().toLowerCase().contains(consulta);
+            boolean enTitulo = p.getTitulo().toLowerCase(Locale.ROOT).contains(consulta);
+            boolean enDirector = p.getDirector().toLowerCase(Locale.ROOT).contains(consulta);
             if (enTitulo || enDirector) {
                 resultados.add(p); // misma referencia del catálogo, no una copia
             }
