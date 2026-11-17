@@ -200,16 +200,45 @@ public class CatalogoPeliculas implements OperacionesCatalogo {
     @Override
     public void editarPelicula(int codigo, String titulo, String director,
                                String genero, int anio) {
-        throw new UnsupportedOperationException("Pendiente: integrante C (edición).");
+        validarCodigo(codigo);
+        validarDatos(titulo, director, genero, anio);
+        int indice = buscarIndicePorCodigo(codigo);
+        if (indice == -1) {
+            throw new IllegalArgumentException("No existe una película con el código " + codigo + ".");
+        }
+        Pelicula p = lista().get(indice);
+        p.setTitulo(titulo != null ? titulo.trim() : null);
+        p.setDirector(director != null ? director.trim() : null);
+        p.setGenero(genero);
+        p.setAnio(anio);
     }
-
     @Override
     public void darMeGusta(int codigo) {
-        throw new UnsupportedOperationException("Pendiente: integrante C (me gusta).");
+        validarCodigo(codigo);
+        int indice = buscarIndicePorCodigo(codigo);
+        if (indice == -1) {
+            throw new IllegalArgumentException("No existe una película con el código " + codigo + ".");
+        }
+        lista().get(indice).incrementarMeGusta();
     }
-
     @Override
     public ArrayList<Pelicula> obtenerRanking() {
-        throw new UnsupportedOperationException("Pendiente: integrante C (ranking burbuja).");
+        ArrayList<Pelicula> copiaRanking = new ArrayList<>(lista());
+        int n = copiaRanking.size();
+        for (int i = 0; i < n - 1; i++) {
+            boolean huboIntercambio = false;
+            for (int j = 0; j < n - 1 - i; j++) {
+                if (copiaRanking.get(j).getMeGusta() < copiaRanking.get(j + 1).getMeGusta()) {
+                    Pelicula temporal = copiaRanking.get(j);
+                    copiaRanking.set(j, copiaRanking.get(j + 1));
+                    copiaRanking.set(j + 1, temporal);
+                    huboIntercambio = true;
+                }
+            }
+            if (!huboIntercambio) {
+                break;
+            }
+        }
+        return copiaRanking;
     }
 }
